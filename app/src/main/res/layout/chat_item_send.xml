@@ -8,25 +8,51 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     android:layout_marginTop="16dp">
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:id="@+id/cardViewSend"
         app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="@color/light_turquoise"
         app:cardCornerRadius="12dp">
         <TextView
             android:id="@+id/tv_send_msg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             tools:text="Hello"
             android:textStyle="bold"
+            android:gravity="end"
             android:textColor="@color/white"
+            android:background="@color/light_turquoise"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:padding="8dp"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cardViewReceive"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cardCornerRadius="12dp">
+        <TextView
+            android:id="@+id/tv_receive_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            tools:text="Hello"
+            android:gravity="start"
+            android:textColor="@color/black"
+            android:background="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="8dp"/>
+
+
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

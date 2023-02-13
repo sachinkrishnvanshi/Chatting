@@ -63,6 +63,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="vertical"
                 app:layout_constraintTop_toTopOf="parent"
+                android:focusable="true"
                 tools:listitem="@layout/chat_item_send" />
 
         </androidx.core.widget.NestedScrollView>
@@ -112,7 +113,6 @@
         app:layout_constraintTop_toTopOf="@id/et_type_msg" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:onClick="@{_ ->chatViewModel.addMessage()}"
         android:id="@+id/iv_send_enable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,8 +1,8 @@
 package com.example.dummychatapp.repo
 
 import com.example.dummychatapp.MainApplication
-import com.example.dummychatapp.chatDao.ChatDatabase
-import com.example.dummychatapp.data.ChatData
+import com.example.dummychatapp.db.ChatDatabase
+import com.example.dummychatapp.db.data.ChatData
 
 class ChatRepository {
     private val chatDatabase by lazy {

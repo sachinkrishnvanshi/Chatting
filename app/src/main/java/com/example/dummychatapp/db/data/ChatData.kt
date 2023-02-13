@@ -1,4 +1,4 @@
-package com.example.dummychatapp.data
+package com.example.dummychatapp.db.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -8,4 +8,5 @@ data class ChatData (
     @PrimaryKey(autoGenerate =true)
     val id: Long ?= null,
     val message: String,
+    val type: Int? = null
 )
