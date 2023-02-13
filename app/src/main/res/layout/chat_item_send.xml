@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cv_chat_send"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_chat_send"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="125dp"
+    app:layout_constraintTop_toTopOf="parent"
     android:layout_marginEnd="16dp"
-    android:layout_marginTop="16dp"
-    app:cardCornerRadius="12dp">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    android:layout_marginTop="16dp">
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/light_turquoise">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/light_turquoise"
+        app:cardCornerRadius="12dp">
         <TextView
             android:id="@+id/tv_send_msg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="hello"
+            android:layout_height="wrap_content"
+            tools:text="Hello"
             android:textStyle="bold"
             android:textColor="@color/white"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:padding="8dp"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
 

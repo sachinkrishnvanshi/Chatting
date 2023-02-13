@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class ChatData (
     @PrimaryKey(autoGenerate =true)
     val id: Long ?= null,
-    val message: String
+    val message: String,
 )
