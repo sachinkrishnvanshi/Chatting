@@ -51,16 +51,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun setUpObserver() {
-        chatViewModel.messages.observe(this, Observer {
-            chatData = it
-            rvAdapter = MessageListAdapter()
-            rvAdapter.differ.submitList(it)
-            mBinding.rvChat.adapter = rvAdapter
-        })
-    }
-
-
     private fun setUpViews() {
         supportActionBar?.hide()
         mBinding.etTypeMsg.onFocusChangeListener =
@@ -76,12 +66,29 @@ class MainActivity : AppCompatActivity() {
             chatViewModel.getMsg()
             mBinding.etTypeMsg.text.clear()
         }
+//        mBinding.rvChat.smoothScrollToPosition(rvAdapter.itemCount-1)
+        mBinding.scroll.smoothScrollTo(0,mBinding.scroll.bottom)
+
     }
 
     override fun onResume() {
         super.onResume()
         chatViewModel.getMsg()
         setUpObserver()
+    }
+    private fun setUpObserver() {
+        chatViewModel.messages.observe(this, Observer {
+            chatData = it
+            rvAdapter = MessageListAdapter()
+            rvAdapter.differ.submitList(it)
+            mBinding.rvChat.adapter = rvAdapter
+        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        chatViewModel.mainHandler.removeCallbacksAndMessages(null)
+
     }
 }
 

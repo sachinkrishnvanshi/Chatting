@@ -15,6 +15,8 @@ class ChatViewModel:ViewModel() {
     var message= MutableLiveData<String>()
     var messageList= MutableLiveData<List<ChatData>>()
     var messages:LiveData<List<ChatData>> =messageList
+    val mainHandler = Handler(Looper.getMainLooper())
+
 
 
     private val chatRepo by lazy {
@@ -34,12 +36,11 @@ class ChatViewModel:ViewModel() {
         }
 
     fun receiveMsg(){
-        val mainHandler = Handler(Looper.getMainLooper())
         mainHandler.post(object : Runnable {
             override fun run() {
-                val data = ChatData(null,"hello123",1)
+                val data = ChatData(null,"hello..how can i help you?",1)
                 addBotMsg(data)
-                mainHandler.postDelayed(this, 100000)
+                mainHandler.postDelayed(this, 30000)
             }
         })
     }
