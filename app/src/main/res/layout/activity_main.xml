@@ -1,136 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="chatViewModel"
             type="com.example.dummychatapp.viewModel.ChatViewModel" />
     </data>
 
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/light_turquoise"
-    tools:context=".ui.MainActivity">
-
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/chat_toolbar"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/cl_type"
-        android:background="@drawable/bg_chat"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="match_parent"
+        android:background="@color/light_turquoise"
+        tools:context=".ui.MainActivity">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_chat_main"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="-1dp"
-        app:layout_constraintBottom_toTopOf="@id/et_type_msg"
-        android:layout_marginBottom="8dp">
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scroll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/chat_toolbar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:fitsSystemWindows="true"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_chat"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_chat_main"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="parent"
-                android:focusable="true"
-                android:layout_gravity="start"
-                tools:listitem="@layout/chat_item_send" />
+                android:layout_height="0dp"
+                android:layout_marginTop="-1dp"
+                android:background="@drawable/bg_chat"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintBottom_toBottomOf="parent">
 
-        </androidx.core.widget.NestedScrollView>
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/light_quart"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <EditText
-        android:id="@+id/et_type_msg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="36dp"
-        android:inputType="text"
-        android:maxLines="1"
-        android:background="@drawable/bg_type_message"
-        android:hint="Aa"
-        android:text="@={chatViewModel.message}"
-        android:padding="8dp"
-        android:textColorHint="@color/light_tertiary"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_send"
-        app:layout_constraintBottom_toBottomOf="@id/et_type_msg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/et_type_msg"
-        app:layout_constraintTop_toTopOf="@id/et_type_msg" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_send_enable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/send_enabled"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@id/et_type_msg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/et_type_msg"
-        app:layout_constraintTop_toTopOf="@id/et_type_msg" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_chat"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="24dp"
+                    android:focusable="true"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/view"
+                    tools:listitem="@layout/chat_item_send" />
 
 
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_quart"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/et_type_msg"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+                <EditText
+                    android:id="@+id/et_type_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="60dp"
+                    android:layout_marginBottom="36dp"
+                    android:background="@drawable/bg_type_message"
+                    android:fontFamily="@font/rubik_regular"
+                    android:hint="Aa"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:text="@={chatViewModel.message}"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/light_tertiary"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_send"
+                    app:layout_constraintBottom_toBottomOf="@id/et_type_msg"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/et_type_msg"
+                    app:layout_constraintTop_toTopOf="@id/et_type_msg" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_send_enable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/send_enabled"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@id/et_type_msg"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/et_type_msg"
+                    app:layout_constraintTop_toTopOf="@id/et_type_msg" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

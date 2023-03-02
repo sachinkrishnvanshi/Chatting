@@ -10,20 +10,5 @@ import com.example.dummychatapp.db.dao.ChatDao
 @Database(entities = [ChatData::class], version = 2)
 abstract class ChatDatabase : RoomDatabase(){
     abstract fun chatDao(): ChatDao
-    companion object {
-        @Volatile
-        private var INSTANCE : ChatDatabase?= null
 
-        fun getDatabase(context: Context) : ChatDatabase {
-            if (INSTANCE == null) {
-                synchronized(this) {}
-                INSTANCE = Room.databaseBuilder(
-                    context,
-                    ChatDatabase::class.java, "userDB1"
-                )
-                    .build()
-            }
-            return INSTANCE!!
-        }
-    }
 }

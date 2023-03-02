@@ -1,19 +1,18 @@
 package com.example.dummychatapp.repo
 
-import com.example.dummychatapp.MainApplication
-import com.example.dummychatapp.db.ChatDatabase
-import com.example.dummychatapp.db.data.ChatData
 
-class ChatRepository {
-    private val chatDatabase by lazy {
-        ChatDatabase
+import com.example.dummychatapp.db.dao.ChatDao
+import com.example.dummychatapp.db.data.ChatData
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+
+class ChatRepository @Inject constructor(private val chatDao:ChatDao) {
+
+    fun addChat(chat: ChatData) {
+        chatDao.insertChat(chat)
     }
-    fun addChat(chat: ChatData)
-    {
-        chatDatabase.getDatabase(MainApplication.instance).chatDao().insertChat(chat)
-    }
-    fun getChat():List<ChatData>
-    {
-        return chatDatabase.getDatabase(MainApplication.instance).chatDao().getAll()
+
+    fun getChat():Flow<List<ChatData>> {
+        return chatDao.getAll()
     }
 }
