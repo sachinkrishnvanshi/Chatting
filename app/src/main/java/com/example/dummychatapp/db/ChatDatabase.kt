@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.dummychatapp.db.data.ChatData
 import com.example.dummychatapp.db.dao.ChatDao
 
-@Database(entities = [ChatData::class], version = 2)
+@Database(entities = [ChatData::class], version = 3)
 abstract class ChatDatabase : RoomDatabase(){
     abstract fun chatDao(): ChatDao
 

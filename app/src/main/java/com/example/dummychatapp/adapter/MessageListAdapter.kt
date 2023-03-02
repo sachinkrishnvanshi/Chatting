@@ -8,61 +8,65 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dummychatapp.db.data.ChatData
-import com.example.dummychatapp.databinding.ChatItemSendBinding
+import com.example.dummychatapp.databinding.LayoutChatItemBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
-class MessageListAdapter :RecyclerView.Adapter<MessageListAdapter.MyHolderView>() {
+class MessageListAdapter : RecyclerView.Adapter<MessageListAdapter.MyHolderView>() {
 
 
-   inner class MyHolderView(var binding:ChatItemSendBinding ):RecyclerView.ViewHolder(binding.root) {
+    inner class MyHolderView(private var binding: LayoutChatItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-       fun sendMsg(position: Int){
-           if (differ.currentList[position].type==1) {
-               binding.tvReceiveMsg.visibility =View.VISIBLE
-               binding.tvSendMsg.visibility =View.GONE
-               binding.tvReceiveMsg.text = differ.currentList[position].message
-           }else{
-               binding.tvReceiveMsg.visibility =View.GONE
-               binding.tvSendMsg.visibility =View.VISIBLE
-               binding.tvSendMsg.text = differ.currentList[position].message
+        fun sendMsg(position: Int) {
+            val simpleDateFormat = SimpleDateFormat("hh:mm")
+            if (differ.currentList[position].type == 1) {
+                binding.tvReceiveMsg.visibility = View.VISIBLE
+                binding.tvSendMsg.visibility = View.GONE
+                binding.tvReceiveMsg.text = differ.currentList[position].message
+                binding.tvReceiveTime.text = simpleDateFormat.format(differ.currentList[position].chatTime)
+            } else {
+                binding.tvReceiveMsg.visibility = View.GONE
+                binding.tvSendMsg.visibility = View.VISIBLE
+                binding.tvSendMsg.text = differ.currentList[position].message
+                binding.tvSendTime.text = simpleDateFormat.format(differ.currentList[position].chatTime)
 
-           }
-       }
+
+            }
+        }
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolderView {
         return MyHolderView(
-            ChatItemSendBinding.inflate(
+            LayoutChatItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false)
+                false
+            )
         )
     }
 
-    override fun getItemCount():Int{
-       return differ.currentList.size
+    override fun getItemCount(): Int {
+        return differ.currentList.size
     }
-
-
 
     override fun onBindViewHolder(holder: MyHolderView, position: Int) {
-      holder.sendMsg(position)
-//        holder.setIsRecyclable(true)
+        holder.sendMsg(position)
     }
 
-    private val differCallback = object : DiffUtil.ItemCallback<ChatData>(){
+    private val differCallback = object : DiffUtil.ItemCallback<ChatData>() {
         override fun areItemsTheSame(oldItem: ChatData, newItem: ChatData): Boolean {
-            return  oldItem.id == newItem.id
+            return oldItem.id == newItem.id
         }
 
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: ChatData, newItem: ChatData): Boolean {
             return oldItem == newItem
         }
-
     }
 
-    val differ = AsyncListDiffer(this,differCallback)
+    val differ = AsyncListDiffer(this, differCallback)
 
 }
 

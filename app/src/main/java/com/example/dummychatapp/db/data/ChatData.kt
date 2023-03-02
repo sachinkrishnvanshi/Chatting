@@ -8,5 +8,7 @@ data class ChatData (
     @PrimaryKey(autoGenerate =true)
     val id: Long ?= null,
     val message: String,
-    val type: Int? = null
-)
+    val type: Int? = null,
+    val chatTime: Long = System.currentTimeMillis()
+
+    )

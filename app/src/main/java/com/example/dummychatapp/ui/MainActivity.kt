@@ -1,5 +1,6 @@
 package com.example.dummychatapp.ui
 
+import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Observer
@@ -28,16 +30,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var rvAdapter: MessageListAdapter
     val mainHandler = Handler(Looper.getMainLooper())
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+        setStatusBarColor()
         chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
         mBinding.chatViewModel = chatViewModel
         mBinding.lifecycleOwner = this
         setUpViews()
-        setStatusBarColor()
         receiveMsg()
     }
 
@@ -54,16 +55,16 @@ class MainActivity : AppCompatActivity() {
         }
         WindowCompat.setDecorFitsSystemWindows(this.window, true)
     }
-    private fun receiveMsg(){
+
+    private fun receiveMsg() {
         mainHandler.post(object : Runnable {
             override fun run() {
-                val data = ChatData(null,"hello..how can i help you?",1)
+                val data = ChatData(null, "hello..how can i help you?", 1)
                 chatViewModel.addBotMsg(data)
                 mainHandler.postDelayed(this, 30000)
             }
         })
     }
-
 
     private fun setUpViews() {
         supportActionBar?.hide()
@@ -71,16 +72,21 @@ class MainActivity : AppCompatActivity() {
             View.OnFocusChangeListener { _: View?, hasFocus: Boolean ->
                 if (hasFocus) {
                     mBinding.ivSendEnable.visibility = View.VISIBLE
-                } else {
                     mBinding.ivSend.visibility = View.GONE
+                } else {
+                    mBinding.ivSend.visibility = View.VISIBLE
+                    mBinding.ivSendEnable.visibility = View.GONE
+
+
                 }
             }
         mBinding.ivSendEnable.setOnClickListener {
             chatViewModel.addMessage()
             mBinding.etTypeMsg.text.clear()
+            mBinding.etTypeMsg.clearFocus()
         }
     }
-    
+
     override fun onResume() {
         super.onResume()
         chatViewModel.getMsg()
@@ -91,9 +97,9 @@ class MainActivity : AppCompatActivity() {
         chatViewModel.messages.observe(this, Observer {
             chatData = it
             rvAdapter = MessageListAdapter()
-            Log.d("chatlist", it.toString())
             rvAdapter.differ.submitList(it)
             mBinding.rvChat.adapter = rvAdapter
+            mBinding.rvChat.scrollToPosition(rvAdapter.itemCount - 1)
             rvAdapter.notifyDataSetChanged()
         })
     }
@@ -101,7 +107,6 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         mainHandler.removeCallbacksAndMessages(null)
-
     }
 }
 
