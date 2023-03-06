@@ -1,19 +1,15 @@
 package com.example.dummychatapp.ui
 
-import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.dummychatapp.R
 import com.example.dummychatapp.adapter.MessageListAdapter
@@ -77,7 +73,6 @@ class MainActivity : AppCompatActivity() {
                     mBinding.ivSend.visibility = View.VISIBLE
                     mBinding.ivSendEnable.visibility = View.GONE
 
-
                 }
             }
         mBinding.ivSendEnable.setOnClickListener {
@@ -94,14 +89,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpObserver() {
-        chatViewModel.messages.observe(this, Observer {
+        chatViewModel.messages.observe(this) {
             chatData = it
             rvAdapter = MessageListAdapter()
             rvAdapter.differ.submitList(it)
             mBinding.rvChat.adapter = rvAdapter
             mBinding.rvChat.scrollToPosition(rvAdapter.itemCount - 1)
-            rvAdapter.notifyDataSetChanged()
-        })
+        }
     }
 
     override fun onPause() {

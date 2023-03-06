@@ -1,6 +1,7 @@
 package com.example.dummychatapp.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,28 @@ import java.util.*
 
 class MessageListAdapter : RecyclerView.Adapter<MessageListAdapter.MyHolderView>() {
 
-
+var isNotPre=""
     inner class MyHolderView(private var binding: LayoutChatItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+
         fun sendMsg(position: Int) {
+
+
+            val date = Date(differ.currentList[position].chatTime)
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val formattedDate = sdf.format(calendar.time)
+
+            if (isNotPre!=formattedDate){
+               isNotPre=formattedDate
+                binding.tvDateDay.visibility=View.VISIBLE
+                binding.tvDateDay.text=formattedDate
+            }
+
             val simpleDateFormat = SimpleDateFormat("hh:mm")
             if (differ.currentList[position].type == 1) {
                 binding.tvReceiveMsg.visibility = View.VISIBLE
@@ -30,8 +48,6 @@ class MessageListAdapter : RecyclerView.Adapter<MessageListAdapter.MyHolderView>
                 binding.tvSendMsg.visibility = View.VISIBLE
                 binding.tvSendMsg.text = differ.currentList[position].message
                 binding.tvSendTime.text = simpleDateFormat.format(differ.currentList[position].chatTime)
-
-
             }
         }
     }
