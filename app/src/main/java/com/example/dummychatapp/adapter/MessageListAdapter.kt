@@ -1,7 +1,6 @@
 package com.example.dummychatapp.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,30 +13,29 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MessageListAdapter : RecyclerView.Adapter<MessageListAdapter.MyHolderView>() {
-
-var isNotPre=""
+    val smsTime: Calendar? = Calendar.getInstance()
     inner class MyHolderView(private var binding: LayoutChatItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
 
         fun sendMsg(position: Int) {
 
-
             val date = Date(differ.currentList[position].chatTime)
-            val calendar = Calendar.getInstance()
-            calendar.time = date
-            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+            val currentTime = Calendar.getInstance()
+            currentTime.time = date
+            val sdf = SimpleDateFormat("EEE, dd/MM/yyyy", Locale.getDefault())
+            val formattedDate = sdf.format(currentTime.time)
 
-            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val formattedDate = sdf.format(calendar.time)
-
-            if (isNotPre!=formattedDate){
-               isNotPre=formattedDate
-                binding.tvDateDay.visibility=View.VISIBLE
+            if (currentTime.get(Calendar.DATE) == smsTime?.get(Calendar.DATE) ) {
+                "Today".also { binding.tvDateDay.text = it }
+            } else if (currentTime.get(Calendar.DATE) - (smsTime?.get(Calendar.DATE)!!) == 1  ){
+                "Yesterday".also { binding.tvDateDay.text = it }
+            }  else {
                 binding.tvDateDay.text=formattedDate
             }
 
-            val simpleDateFormat = SimpleDateFormat("hh:mm")
+
+            val simpleDateFormat = SimpleDateFormat("hh:mm",Locale.getDefault())
             if (differ.currentList[position].type == 1) {
                 binding.tvReceiveMsg.visibility = View.VISIBLE
                 binding.tvSendMsg.visibility = View.GONE

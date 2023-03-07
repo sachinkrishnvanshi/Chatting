@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/tv_date_day"
         tools:text="14:20"
-        android:visibility="gone"
         android:textSize="@dimen/sp_12"
         android:textColor="@color/light_tertiary"
         android:fontFamily="@font/rubik_regular"
