@@ -5,18 +5,23 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.example.dummychatapp.location.LocationUtility
+import com.example.dummychatapp.location.PermissionUtil
 import com.example.dummychatapp.R
 import com.example.dummychatapp.adapter.MessageListAdapter
 import com.example.dummychatapp.db.data.ChatData
 import com.example.dummychatapp.databinding.ActivityMainBinding
 import com.example.dummychatapp.viewModel.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -24,18 +29,50 @@ class MainActivity : AppCompatActivity() {
     private lateinit var chatViewModel: ChatViewModel
     private var chatData: List<ChatData>? = null
     private lateinit var rvAdapter: MessageListAdapter
+    private lateinit var permissionUtil: PermissionUtil
     val mainHandler = Handler(Looper.getMainLooper())
+    private lateinit var locationUtility: LocationUtility
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+        locationUtility = LocationUtility(this)
+        lifecycle.addObserver(locationUtility)
         setStatusBarColor()
         chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
         mBinding.chatViewModel = chatViewModel
         mBinding.lifecycleOwner = this
         setUpViews()
         receiveMsg()
+        getLocationDetail()
+        observeLocation()
+    }
+    private fun getLocationDetail(){
+        permissionUtil = PermissionUtil(this)
+        permissionUtil.launch(
+            permissions = arrayOfLocationPermission(),
+            onGranted = { locationUtility.startLocationClient() },
+            onDenied = { },
+            onShouldShowRationale = { }
+        )
+    }
+    private fun observeLocation(){
+        lifecycleScope.launch {
+            locationUtility.getOneTime().collect{
+                Log.d("currentLocation","${it?.first} & ${it?.second}")
+
+            }
+        }
+    }
+
+
+    private fun arrayOfLocationPermission(): Array<String> {
+        return arrayOf(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+        )
     }
 
     private fun setStatusBarColor() {
