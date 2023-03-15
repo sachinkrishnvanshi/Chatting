@@ -204,7 +204,7 @@ open class LocationUtility(private val fragment: FragmentActivity) :
     }
 
     @SuppressLint("MissingPermission")
-    fun getOneTime() = callbackFlow {
+    fun getOneTime() = callbackFlow<Pair<Double, Double>?> {
         fusedLocationProviderClient?.let {
             it.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, object : CancellationToken() {
 

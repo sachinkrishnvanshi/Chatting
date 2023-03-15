@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.dummychatapp.location.LocationUtility
 import com.example.dummychatapp.location.PermissionUtil
 import com.example.dummychatapp.R
+import com.example.dummychatapp.SharedPreferenceManager
 import com.example.dummychatapp.adapter.MessageListAdapter
 import com.example.dummychatapp.db.data.ChatData
 import com.example.dummychatapp.databinding.ActivityMainBinding
@@ -62,7 +63,9 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             locationUtility.getOneTime().collect{
                 Log.d("currentLocation","${it?.first} & ${it?.second}")
-
+                SharedPreferenceManager.put("latitude",it?.first.toString())
+                SharedPreferenceManager.put("longitude",it?.second.toString())
+                Log.d("shared",SharedPreferenceManager.getString("latitude"))
             }
         }
     }
