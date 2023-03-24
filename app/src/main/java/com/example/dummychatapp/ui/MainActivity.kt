@@ -1,16 +1,19 @@
 package com.example.dummychatapp.ui
 
+import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.dummychatapp.location.LocationUtility
@@ -23,16 +26,20 @@ import com.example.dummychatapp.databinding.ActivityMainBinding
 import com.example.dummychatapp.viewModel.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
     private lateinit var chatViewModel: ChatViewModel
     private var chatData: List<ChatData>? = null
-    private lateinit var rvAdapter: MessageListAdapter
     private lateinit var permissionUtil: PermissionUtil
-    val mainHandler = Handler(Looper.getMainLooper())
     private lateinit var locationUtility: LocationUtility
+    val mainHandler = Handler(Looper.getMainLooper())
+
+    @Inject
+    lateinit var rvAdapter: MessageListAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,25 +56,56 @@ class MainActivity : AppCompatActivity() {
         receiveMsg()
         getLocationDetail()
         observeLocation()
+        getUserCountry(this)
     }
     private fun getLocationDetail(){
         permissionUtil = PermissionUtil(this)
         permissionUtil.launch(
             permissions = arrayOfLocationPermission(),
-            onGranted = { locationUtility.startLocationClient() },
+            onGranted = {
+                if(!locationUtility.isGpsEnable())
+                    locationUtility.startLocationClient()
+                        },
             onDenied = { },
             onShouldShowRationale = { }
         )
     }
+    private fun getUserCountry(context: Context): String? {
+        try {
+            val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            val simCountry = tm.simCountryIso
+            if (simCountry != null && simCountry.length == 2) {
+                // SIM country code is available
+                return simCountry.lowercase(Locale.getDefault())
+            } else if (tm.phoneType != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
+                val networkCountry = tm.networkCountryIso
+                if (networkCountry != null && networkCountry.length == 2) {
+                    // network country code is available
+                    return networkCountry.lowercase(Locale.getDefault())
+                }
+            }
+        } catch (e: Exception) {
+        }
+        return null
+    }
     private fun observeLocation(){
-        lifecycleScope.launch {
-            locationUtility.getOneTime().collect{
+            locationUtility.currentLocation.observe( this,Observer {
+                val lat = it.first
+                val long = it.second
                 Log.d("currentLocation","${it?.first} & ${it?.second}")
                 SharedPreferenceManager.put("latitude",it?.first.toString())
                 SharedPreferenceManager.put("longitude",it?.second.toString())
                 Log.d("shared",SharedPreferenceManager.getString("latitude"))
-            }
-        }
+            })
+//        for one time location requests.
+
+           /* locationUtility.getOneTime().collect{
+                Log.d("currentLocation","${it?.first} & ${it?.second}")
+                SharedPreferenceManager.put("latitude",it?.first.toString())
+                SharedPreferenceManager.put("longitude",it?.second.toString())
+                Log.d("shared",SharedPreferenceManager.getString("latitude"))
+            }*/
+
     }
 
 
@@ -131,16 +169,16 @@ class MainActivity : AppCompatActivity() {
     private fun setUpObserver() {
         chatViewModel.messages.observe(this) {
             chatData = it
-            rvAdapter = MessageListAdapter()
             rvAdapter.differ.submitList(it)
             mBinding.rvChat.adapter = rvAdapter
             mBinding.rvChat.scrollToPosition(rvAdapter.itemCount - 1)
         }
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         mainHandler.removeCallbacksAndMessages(null)
+
     }
 }
 

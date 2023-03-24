@@ -6,7 +6,7 @@ import android.preference.PreferenceManager
 
 object SharedPreferenceManager {
     private var mInstance: SharedPreferences? = null
-    val editor = getInstance().edit()
+    private val editor = getInstance().edit()
 
     private fun getInstance(): SharedPreferences {
         if (mInstance == null)
@@ -29,7 +29,7 @@ object SharedPreferenceManager {
         return getInstance().getString(key, "")!!
     }
     fun getBoolean(key: String): Boolean {
-        return getInstance().getBoolean(key, false)!!
+        return getInstance().getBoolean(key, false)
     }
     fun clearAllPrefs() {
 

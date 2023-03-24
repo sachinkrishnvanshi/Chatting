@@ -11,8 +11,9 @@ import com.example.dummychatapp.db.data.ChatData
 import com.example.dummychatapp.databinding.LayoutChatItemBinding
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class MessageListAdapter : RecyclerView.Adapter<MessageListAdapter.MyHolderView>() {
+class MessageListAdapter @Inject constructor(): RecyclerView.Adapter<MessageListAdapter.MyHolderView>() {
     val smsTime: Calendar? = Calendar.getInstance()
     inner class MyHolderView(private var binding: LayoutChatItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
